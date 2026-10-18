@@ -1,26 +1,304 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #faf9f6;
+  --bg-2: #f3f1ec;
+  --card: #ffffff;
+  --fg: #16151a;
+  --muted: #67646e;
+  --faint: #75727c;
+  --line: rgba(22, 21, 26, 0.09);
+  --line-strong: rgba(22, 21, 26, 0.16);
+  --accent: #7d6bff;
+  --accent-ink: #5a47e6;
+  --accent-soft: rgba(125, 107, 255, 0.12);
+  --green: #24b062;
+  --green-soft: rgba(36, 176, 98, 0.14);
+  --amber: #e58a1f;
+  --amber-soft: rgba(229, 138, 31, 0.14);
+  --red: #e0475a;
+  --red-soft: rgba(224, 71, 90, 0.12);
+  --ink: #16151a; /* dark surfaces (terminal, flow bar) */
+  --ink-fg: #f4f3f8;
+  --shadow: 0 1px 2px rgba(22, 21, 26, 0.04), 0 12px 32px -12px rgba(22, 21, 26, 0.14);
+  --shadow-lg: 0 2px 4px rgba(22, 21, 26, 0.04), 0 32px 64px -24px rgba(40, 30, 90, 0.28);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #0b0a0f;
+    --bg-2: #121118;
+    --card: #16151d;
+    --fg: #f2f1f6;
+    --muted: #a19eab;
+    --faint: #8e8b98;
+    --line: rgba(255, 255, 255, 0.08);
+    --line-strong: rgba(255, 255, 255, 0.15);
+    --accent: #8f80ff;
+    --accent-ink: #a99dff;
+    --accent-soft: rgba(143, 128, 255, 0.16);
+    --green: #3ccf7c;
+    --green-soft: rgba(60, 207, 124, 0.16);
+    --amber: #f2a446;
+    --amber-soft: rgba(242, 164, 70, 0.16);
+    --red: #f06b7c;
+    --red-soft: rgba(240, 107, 124, 0.16);
+    --ink: #050508;
+    --ink-fg: #f4f3f8;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 32px 64px -24px rgba(0, 0, 0, 0.8);
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-green: var(--green);
+  --color-green-soft: var(--green-soft);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-red: var(--red);
+  --color-red-soft: var(--red-soft);
+  --color-ink: var(--ink);
+  --color-ink-fg: var(--ink-fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif-display);
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+/* Display headline italic accent, like a handwritten emphasis. */
+.serif {
+  font-family: var(--font-serif-display), ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9em;
+  height: 1.7em;
+  padding: 0 0.45em;
+  border-radius: 7px;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 3px;
+  background: var(--card);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.8em;
+  font-weight: 500;
+  color: var(--fg);
+  vertical-align: middle;
+}
+
+/* Soft dotted backdrop for hero / CTA sections. */
+.grid-bg {
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
+.glow {
+  background: radial-gradient(closest-side, var(--accent-soft), transparent);
+}
+
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+.wave-bar {
+  transform-origin: center;
+  animation: wave 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.pop {
+  animation: pop 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .marquee, .wave-bar, .caret, .spin, .pop { animation: none; }
+}
+
+/* Long-form article pages (guides, comparison, privacy). */
+.prose-ff {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.75;
+}
+.prose-ff h2 {
+  margin: 3.2rem 0 1rem;
+  color: var(--fg);
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  scroll-margin-top: 90px;
+}
+.prose-ff h3 {
+  margin: 2rem 0 0.6rem;
+  color: var(--fg);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.prose-ff p,
+.prose-ff ul,
+.prose-ff ol {
+  margin: 0 0 1.1rem;
+}
+.prose-ff ul {
+  list-style: disc;
+  padding-left: 1.3rem;
+}
+.prose-ff ol {
+  list-style: decimal;
+  padding-left: 1.3rem;
+}
+.prose-ff li {
+  margin: 0.35rem 0;
+}
+.prose-ff li::marker {
+  color: var(--accent);
+}
+.prose-ff strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.prose-ff a {
+  color: var(--accent-ink);
+  font-weight: 500;
+  text-underline-offset: 4px;
+}
+.prose-ff a:hover {
+  text-decoration: underline;
+}
+.prose-ff code {
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+  padding: 0.12em 0.4em;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.86em;
+  color: var(--fg);
+}
+.prose-ff table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.prose-ff th,
+.prose-ff td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.8rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-ff th {
+  color: var(--fg);
+  font-weight: 600;
 }
